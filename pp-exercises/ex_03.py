@@ -1,6 +1,6 @@
 from random import randint
 
-lt = int(input("What number should the the max? >> "))
+lt = int(input("What number should be the max? >> "))
 
 a_list = [i for i in range(randint(lt, 100))]
 
