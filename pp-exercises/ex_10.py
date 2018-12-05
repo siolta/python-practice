@@ -1,7 +1,7 @@
 import random
 
-a = [random.randint(0, 50) for i in range(random.randint(0,20))]
-b = [random.randint(0, 50) for i in range(random.randint(0,20))]
+a = [random.randint(0, 50) for i in range(random.randint(0, 20))]
+b = [random.randint(0, 50) for i in range(random.randint(0, 20))]
 
 
 def commons(a, b):
