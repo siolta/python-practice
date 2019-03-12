@@ -32,8 +32,8 @@ class missingEl(object):
         '''
         Find the missing element in array A using sum, O(n) complexity
         '''
-        n = len(A)
-        total = (n + 1) * (n + 2) // 2
+        array_len = len(A)
+        total = (array_len + 1) * (array_len + 2) // 2
         sum_of_A = sum(A)
         return total - sum_of_A
 
