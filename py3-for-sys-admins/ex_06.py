@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 file_name = input("What should the file be named? >  ")
 
 with open(file_name, 'a') as f:
