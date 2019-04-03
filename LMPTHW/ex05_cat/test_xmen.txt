@@ -1,0 +1,13 @@
+['new_xmen.txt', 'xmen_base.txt']
+Beast
+Pheonix
+e
+Cyclops
+Bishop
+Nightcrawler
+Storm
+Wolverine
+Cyclops
+Bishop
+Nightcrawler
+Professor Xavier
