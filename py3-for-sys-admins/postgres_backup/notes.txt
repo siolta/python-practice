@@ -1,4 +1,4 @@
-Postgres User:sky_min
+Postgres User: sky_min
 Postgres Pass: skyminpass
 
 export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
@@ -6,4 +6,4 @@ export PATH="/usr/local/opt/postgresql@9.6/bin:$PATH"
 Test Postgres connection:
 psql postgres://[USERNAME]:[PASSWORD]@[SERVER_IP]:80/sample -c "SELECT count(id) FROM employees;"
 
-psql postgres://sky_min:skyminpass@18.222.44.84:80/sample -c "SELECT count(id) FROM employees;"
+psql postgres://sky_min:skyminpass@3.19.72.134:80/sample -c "SELECT count(id) FROM employees;"
