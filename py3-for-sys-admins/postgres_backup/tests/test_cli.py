@@ -19,7 +19,7 @@ def test_parser_with_driver():
     """
     parser = cli.create_parser()
     with pytest.raises(SystemExit):
-        parser.parse_args[url, "--driver", "local"]
+        parser.parse_args([url, "--driver", "local"])
 
 def test_parser_with_driver_and_destination():
     """
