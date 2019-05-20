@@ -43,7 +43,7 @@ class missingEl(object):
         '''
         left = 0
         right = len(A) - 1
-        middle = (left + right) // 2
+        middle = right // 2
 
         while right > left + 1:
             if (A[left] - left) != (A[middle] - middle):
