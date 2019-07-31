@@ -13,7 +13,7 @@ args = parser.parse_args()
 
 print(args.files)
 
-line_count = 1
+line_number = 1
 
 for file in args.files:
     with open(file) as f:
@@ -21,12 +21,12 @@ for file in args.files:
         prev_line = lines[0]
         for line in lines:
             if args.number:
-                print(f"{line_count} : {line.strip()}")
-                line_count += 1
+                print(f"{line_number} : {line.strip()}")
+                line_number += 1
             elif args.blank_number:
                 if line.strip():
-                    print(f"{line_count} : {line.strip()}")
-                    line_count += 1
+                    print(f"{line_number} : {line.strip()}")
+                    line_number += 1
                 else:
                     print(f"  : {line.strip()}")
             elif args.squeeze:
