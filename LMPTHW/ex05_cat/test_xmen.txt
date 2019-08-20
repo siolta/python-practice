@@ -1,4 +1,3 @@
-['new_xmen.txt', 'xmen_base.txt']
 Beast
 Pheonix
 e
