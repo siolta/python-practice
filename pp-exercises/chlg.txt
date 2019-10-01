@@ -1,0 +1,17 @@
+You have a list of lists of integers.  Each list of integers is sorted.
+Example:
+data = [[1,5],[2,5,5,9],[6,8,12]]
+Write a datastructure that has a function ".next()"  which returns the next lowest number which had not previously been returned.
+
+in this case:
+foo.next() -> 1
+foo.next() -> 2
+foo.next() -> 5
+foo.next() -> 5
+foo.next() -> 5
+foo.next() -> 6
+
+and so on.
+Limitations:
+The lists may be very large so you can't copy the entire data structure.
+You can't alter the data in place (you can't remove items or re-order them).
