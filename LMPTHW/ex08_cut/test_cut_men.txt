@@ -1,0 +1,8 @@
+Beast:Pheonix:Cyclops:Bishop:Nightcrawler:Storm:Wolverine
+cyclops:bishop:nightcrawler:Professor Xavier:
+Beast:Pheonix:Cyclops:Bishop:Nightcrawler:Storm:Wolverine
+cyclops:bishop:nightcrawler:Professor Xavier:Juggernaut
+Beast   Pheonix  Cyclops Bishop Nightcrawler   Storm    Wolverine
+cyclops bishop nightcrawler   Professor Xavier 
+Beast   Pheonix  Cyclops Bishop Nightcrawler   Storm    Wolverine
+cyclops bishop nightcrawler   Professor Xavier Juggernaut
