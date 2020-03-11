@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import argparse
-<<<<<<< HEAD
 
 
 def parse_args():
@@ -20,6 +19,3 @@ with open(args.file) as f:
     
 
 print(args)
-=======
-import sys
->>>>>>> 420fe2d2e1811a942139387314a7c52de775fb9e
