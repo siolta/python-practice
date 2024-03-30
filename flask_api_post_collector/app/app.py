@@ -7,10 +7,13 @@ from flask_pymongo import PyMongo
 from flask import Flask, request, jsonify
 
 application = Flask(__name__)
+MONGODB_USERNAME = os.environ['MONGODB_USERNAME']
+MONGODB_PASSWORD = os.environ['MONGODB_PASSWORD']
+MONGODB_HOSTNAME = os.environ['MONGODB_HOSTNAME']
+MONGODB_DATABASE = os.environ['MONGODB_DATABASE']
 
 # initialize some settings for the database connection
-application.config["MONGO_URI"] = 'mongodb://' + os.environ['MONGODB_USERNAME'] + ':' + os.environ[
-    'MONGODB_PASSWORD'] + '@' + os.environ['MONGODB_HOSTNAME'] + ':27017/' + os.environ['MONGODB_DATABASE']
+application.config["MONGO_URI"] = f'mongodb://{MONGODB_USERNAME}:{MONGODB_PASSWORD}@{MONGODB_HOSTNAME}:27017/{MONGODB_DATABASE}'
 
 mongo = PyMongo(application)
 db = mongo.db
@@ -37,6 +40,10 @@ def check_uid(uid):
     elif request.method == "POST":
         return put_data(uid, request.json)
 
+@application.route('/list', methods=["GET"])
+def list_ids():
+    cursor = db.flaskdb.find()
+    return jsonify([id['endpoint_id'] for id in cursor])
 
 @application.route('/health')
 def health_check():
