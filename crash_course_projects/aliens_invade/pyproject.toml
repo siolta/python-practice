@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "aliens-invade"
+version = "0.1.0"
+description = "A small pygame project that clones alien invaders gameplay"
+authors = ["Skylar Iolta <23390416+siolta@users.noreply.github.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pygame = "^2.5.2"
+
+[tool.poetry.group.dev.dependencies]
+pygame = "^2.5.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
