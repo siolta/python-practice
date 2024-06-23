@@ -80,7 +80,7 @@ class AlienInvasion:
         self.bullets.update()
 
         # Get rid of bullets that have disappeared.
-        # Use a cope so the list stays the same length
+        # Use a copy so the list stays the same length
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
