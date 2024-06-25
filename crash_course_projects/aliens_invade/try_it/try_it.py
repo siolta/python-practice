@@ -3,8 +3,6 @@ import sys
 import pygame
 
 
-# TODO: Split the eva gif and animate the character
-
 class TryIt:
     """Class to manage game assets and behaviours"""
 

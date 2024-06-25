@@ -4,10 +4,6 @@ import pygame
 from pygame.sprite import Sprite
 
 
-# TODO: make the bullets travel left -> right
-# delete the bullets after they leave the screen
-# TODO: Split the eva gif and animate the character
-
 class TryIt:
     """Class to manage game assets and behaviours"""
 
