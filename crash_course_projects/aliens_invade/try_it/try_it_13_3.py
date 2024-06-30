@@ -4,8 +4,6 @@ import pygame
 from pygame.sprite import Sprite
 from random import randint
 
-# TODO: Create grid of rain drops that fall down until
-# dissapearing off the bottom of the screen
 # TODO: Make it so when a row dissappears, a new row appears
 # at the top of the screen and begins to fall
 
@@ -20,13 +18,14 @@ class TryIt:
         self.screen_width = 1200
         self.screen_height = 800
         self.bg_color = (50, 50, 50)
+        self.max_rain_sprites = 180
 
         self.screen = pygame.display.set_mode((self.screen_width,
                                                self.screen_height))
         pygame.display.set_caption("raindrops")
-        self.stars = pygame.sprite.Group()
+        self.raindrops = pygame.sprite.Group()
 
-        self._create_starfield()
+        self._create_raindrops()
 
         # set background color
         self.bg_color = (self.bg_color)
@@ -35,6 +34,8 @@ class TryIt:
         """start game loop"""
         while True:
             self._check_events()
+            self._update_rain()
+            print(len(self.raindrops))
             self._update_screen()
             self.clock.tick(60)
 
@@ -45,59 +46,85 @@ class TryIt:
             if event.type == pygame.QUIT:
                 sys.exit()
 
-    def _create_starfield(self):
-        """create a field of stars"""
-        star = Star(self)
-        star_width, star_height = star.rect.size
+    def _update_rain(self):
+        """Update raindrop positions."""
+        self._check_rain_edge()
+        self.raindrops.update()
 
-        current_x, current_y = star_width, star_height
-        while current_y < (self.screen_height - 3 * star_height):
-            while current_x < (self.screen_width - 2 * star_width):
-                self._create_star(
+    def _create_raindrops(self):
+        """create a bunch of rain"""
+        raindrop = Raindrop(self)
+        drop_width, drop_height = raindrop.rect.size
+
+        current_x, current_y = drop_width, drop_height
+        while len(self.raindrops) < self.max_rain_sprites:
+            while current_x < (self.screen_width - 2 * drop_width):
+                self._create_drop(
                     randint(current_x, (current_x + 24)),
                     randint(current_y, (current_y + 26))
                 )
-                current_x += 2 * star_width
+                current_x += 2 * drop_width
 
-            current_x = star_width
-            current_y += 2 * star_height
+            current_x = drop_width
+            current_y += 2 * randint((drop_height // 2), drop_height)
 
-    def _create_star(self, x_pos, y_pos):
-        """create a star and place it in the row"""
-        new_star = Star(self)
-        new_star.x = x_pos
-        new_star.y = y_pos
-        new_star.rect.x = x_pos
-        new_star.rect.y = y_pos
-        self.stars.add(new_star)
+    def _create_drop(self, x_pos, y_pos):
+        """create a raindrop and place it in the row"""
+        new_drop = Raindrop(self)
+        new_drop.x = x_pos
+        new_drop.y = y_pos
+        new_drop.rect.x = x_pos
+        new_drop.rect.y = y_pos
+        self.raindrops.add(new_drop)
+
+    def _check_rain_edge(self):
+        """Respond to raindrops that have reached the bottom"""
+        for rain_drop in self.raindrops.sprites():
+            if rain_drop.check_edge():
+                self.raindrops.remove(rain_drop)
+                self._create_drop(
+                    randint(rain_drop.x - 6, rain_drop.x + 6),
+                    rain_drop.rect.height)
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
         self.screen.fill(self.bg_color)
-        self.stars.draw(self.screen)
+        self.raindrops.draw(self.screen)
 
         pygame.display.flip()
 
 
-class Star(Sprite):
-    """class to manage star sprites"""
+class Raindrop(Sprite):
+    """class to manage raindrop sprites"""
 
     def __init__(self, try_it):
         """initialize character"""
         super().__init__()
         self.screen = try_it.screen
 
-        # load star image and get rect
+        # settings
+        self.rain_speed = 3
+
+        # load raindrop image and get rect
         self.image = pygame.image.load('images/raindrop.png')
         self.rect = self.image.get_rect()
 
-        # start each new star near top left of screen
+        # start each new raindrop near top left of screen
         self.rect.x = self.rect.width
         self.rect.y = self.rect.height
 
-        # stor star's exact horizontal position
+        # store raindrops's exact horizontal position
         self.x = float(self.rect.x)
         self.y = float(self.rect.y)
+
+    def check_edge(self):
+        """Return True if raindrop is at bottom edge of screen"""
+        screen_rect = self.screen.get_rect()
+        return (self.rect.bottom >= screen_rect.bottom)
+
+    def update(self):
+        self.y += self.rain_speed
+        self.rect.y = self.y
 
 
 if __name__ == '__main__':
