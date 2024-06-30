@@ -19,11 +19,12 @@ class Ship:
         self.image = pygame.image.load('images/ship.bmp')
         self.rect = self.image.get_rect()
 
-        # Start each new ship at the bottom center of the screen.
-        self.rect.midbottom = self.screen_rect.midbottom
-
-        # Store a float for the ship's exact horizontal position
-        self.x = float(self.rect.x)
+        self.center_ship()
+        # # Start each new ship at the bottom center of the screen.
+        # self.rect.midbottom = self.screen_rect.midbottom
+        #
+        # # Store a float for the ship's exact horizontal position
+        # self.x = float(self.rect.x)
 
     def blitme(self):
         """Draw the ship at its current location."""
@@ -39,3 +40,8 @@ class Ship:
 
         # Update rect object from self.x.
         self.rect.x = self.x
+
+    def center_ship(self):
+        """center ship on the screen."""
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x)
