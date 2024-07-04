@@ -35,7 +35,7 @@ class TryIt:
         while True:
             self._check_events()
             self._update_rain()
-            print(len(self.raindrops))
+            # print(len(self.raindrops))
             self._update_screen()
             self.clock.tick(60)
 
