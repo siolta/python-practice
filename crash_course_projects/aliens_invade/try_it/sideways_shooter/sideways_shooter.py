@@ -1,18 +1,19 @@
 import sys
+from time import sleep
+from random import randint
 
 import pygame
 
 from settings import Settings
+from game_stats import GameStats
+from character import Character
 from bullet import Bullet
-# from enemy import Enemy
+from enemy import Enemy
 
-# TODO: add fleet of enemies to shoot down at 'random' positions
-# TODO: make fleet of enemy sprites move left towards player
-# TODO: detect bullet collisions
-# TODO: refactor into multiple files?
-# TODO: track times ship is hit
 # TODO: track times alien is hit by ship
-# TODO: create end condition for game
+# TODO: create a surface in the gamestats class for
+# rendering remaining lives, score, etc to
+# TODO: print out 'GAME OVER' when game ends
 
 
 class SidewaysShooter:
@@ -23,28 +24,40 @@ class SidewaysShooter:
         pygame.init()
         self.clock = pygame.time.Clock()
         self.settings = Settings()
-        self.screen_width = 1200
-        self.screen_height = 800
-        self.bg_color = (50, 55, 140)
+        self.bg_color = self.settings.bg_color
         self.GAME_FONT = pygame.freetype.SysFont('Mono', 18)
-        self.DEBUG = False
+        self.DEBUG = self.settings.DEBUG
         self._key_press_debug = pygame.Surface((0, 0))
 
-        self.screen = pygame.display.set_mode((self.screen_width,
-                                               self.screen_height))
+        self.screen = pygame.display.set_mode((self.settings.screen_width,
+                                               self.settings.screen_height))
         pygame.display.set_caption("Trying things out")
+
+        # create an instance of game stats
+        self.stats = GameStats(self)
+
         self.character = Character(self)
         self.bullets = pygame.sprite.Group()
+        self.enemies = pygame.sprite.Group()
+
+        self._create_fleet()
 
         # set background color
         self.bg_color = (self.bg_color)
+
+        # Start game in 'active' state.
+        self._game_active = True
 
     def run_game(self):
         """start game loop"""
         while True:
             self._check_events()
-            self.character.update()
-            self._update_bullets()
+
+            if self._game_active:
+                self.character.update()
+                self._update_bullets()
+                self._update_enemies()
+
             self._update_screen()
             self.clock.tick(60)
 
@@ -72,6 +85,8 @@ class SidewaysShooter:
             self.character.moving_up = True
         if event.key == pygame.K_DOWN:
             self.character.moving_down = True
+        if event.key == pygame.K_q:
+            sys.exit()
         if event.key == pygame.K_SPACE:
             self._fire_bullet()
 
@@ -83,7 +98,7 @@ class SidewaysShooter:
             self.character.moving_down = False
 
     def _fire_bullet(self):
-        if len(self.bullets) < 3:
+        if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
@@ -98,66 +113,129 @@ class SidewaysShooter:
         if self.DEBUG:
             print(len(self.bullets))
 
+        self._check_bullet_enemy_collisions()
+
+    def _check_bullet_enemy_collisions(self):
+        """respond to bullet enemy collisions."""
+        # remove bullets and enemies that have collided
+        # first bool is bullet removal
+        _ = pygame.sprite.groupcollide(
+            self.bullets, self.enemies,
+            self.settings.piercing_rounds, True)
+
+        if not self.enemies:
+            # reset bullets and enemies
+            self.bullets.empty()
+            self._create_fleet()
+
+    def _update_enemies(self):
+        """Update position of all enemies in the fleet."""
+        self._check_fleet_edges()
+        self.enemies.update()
+
+        # look for enemy-ship collisions
+        if pygame.sprite.spritecollideany(self.character, self.enemies):
+            self._character_hit()
+
+        # look for enemies hitting the left side of the screen
+        self._check_enemies_left()
+
+    def _check_enemies_left(self):
+        """check if any enemies have reached the left side of the screen"""
+        for alien in self.enemies.sprites():
+            if alien.rect.left <= 0:
+                # treat the same as if the ship was hit
+                self._character_hit()
+                break
+
+    def _create_fleet(self):
+        """create the fleet of enemies"""
+        # sprite1 is 29w x 28h
+        # sprite2 is 25w x 26h
+        # rough avg of 2 sprite widths to ensure they start on different collumns
+        current_x = self.settings.screen_width - 25 * 3
+        for enemy_type in ['images/enemy_sprite.png',
+                           'images/enemy_sprite_2.png']:
+            enemy = Enemy(self, enemy_type)
+            enemy_width, enemy_height = enemy.rect.size
+
+            current_y = enemy_height
+            while current_y < (self.settings.screen_height - 3 * enemy_height):
+                self._create_enemy(randint(
+                    current_x, (current_x + enemy_height // 2)),
+                    randint(
+                    current_y, (current_y + enemy_width // 4)),
+                    enemy_type)
+                current_y += 2 * enemy_height
+
+            # finished a collum; reset y val, increment x val
+            current_y = enemy_height
+            current_x -= 3 * enemy_width
+
+    def _create_enemy(self, x_position, y_position, sprite_image):
+        """create an enemy and place it."""
+        new_enemy = Enemy(self, sprite_image)
+        new_enemy.x = x_position
+        new_enemy.y = y_position
+        new_enemy.rect.x = x_position
+        new_enemy.rect.y = y_position
+        self.enemies.add(new_enemy)
+
+    def _check_fleet_edges(self):
+        """respond when enemies reach a screen edge."""
+        for enemy in self.enemies.sprites():
+            if enemy.check_edges():
+                self._change_fleet_direction()
+                break
+
+    def _change_fleet_direction(self):
+        """shift fleet left, and change fleet direction."""
+        for enemy in self.enemies.sprites():
+            enemy.rect.x -= self.settings.enemy_shift_speed
+        self.settings.enemy_direction *= -1
+
+    def _character_hit(self):
+        """respond to the player character being hit by an enemy."""
+        if self.stats.character_lives > 0:
+            self.stats.character_lives -= 1
+            self._print_character_lives()
+
+            # Remove any leftover objects
+            self.bullets.empty()
+            self.enemies.empty()
+
+            # create new fleet and reset player
+            self._create_fleet()
+            self.character.center_player()
+
+            # Pause
+            sleep(1)
+        else:
+            self._game_active = False
+
+    def _print_character_lives(self):
+        self.stats._stats_surface, _ = self.GAME_FONT.render(
+            str(f"Lives Left: {self.stats.character_lives}"), (0, 0, 0))
+        self.screen.blit(self.stats._stats_surface,
+                         self.screen.get_rect().midtop)
+
     def _update_screen(self):
-        """Update images on the screen, and flip to the new screen."""
+        """update images on the screen, and flip to the new screen."""
         self.screen.fill(self.bg_color)
-        # print key inputs if DEBUG
+
+        # print key inputs if debug
         if self.DEBUG:
             self.screen.blit(self._key_press_debug,
                              self.screen.get_rect().midleft)
+
+        self._print_character_lives()
+
         self.character.blitme()
+        self.enemies.draw(self.screen)
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
 
         pygame.display.flip()
-
-
-class Character:
-    """class to manage properties for initial game character"""
-
-    def __init__(self, try_it_game):
-        """initialize character"""
-        self.screen = try_it_game.screen
-        self.screen_rect = try_it_game.screen.get_rect()
-
-        # movement flags
-        self.moving_right = False
-        self.moving_left = False
-        self.moving_up = False
-        self.moving_down = False
-
-        # load character image and get rect
-        self.image = pygame.image.load('images/defender.png')
-        self.rect = self.image.get_rect()
-
-        # start at center of screen
-        self.rect.midleft = self.screen_rect.midleft
-
-        # set speed value
-        self.char_speed = 2.5
-
-        # store float for characters's exact position
-        self.x = float(self.rect.x)
-        self.y = float(self.rect.y)
-
-    def blitme(self):
-        """draw character at current location."""
-        self.screen.blit(self.image, self.rect)
-
-    def update(self):
-        """Update the characters's position based on movement flags."""
-        if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.x += self.char_speed
-        if self.moving_left and self.rect.left > 0:
-            self.x -= self.char_speed
-        if self.moving_up and self.rect.top > 0:
-            self.y -= self.char_speed
-        if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
-            self.y += self.char_speed
-
-        # update char rect object
-        self.rect.x = self.x
-        self.rect.y = self.y
 
 
 if __name__ == '__main__':

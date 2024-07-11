@@ -11,15 +11,11 @@ class Bullet(Sprite):
         super().__init__()
         self.screen = sideways_game.screen
         self.settings = sideways_game.settings
-        # settings
-        self.bullet_speed = 2.0
-        self.bullet_width = 15
-        self.bullet_height = 10
-        self.bullet_color = (204, 204, 0)
-        self.bullets_allowed = 3
+        self.color = self.settings.bullet_color
 
         # create at (0, 0) and set position
-        self.rect = pygame.Rect(0, 0, self.bullet_width, self.bullet_height)
+        self.rect = pygame.Rect(
+            0, 0, self.settings.bullet_width, self.settings.bullet_height)
         self.rect.midright = sideways_game.character.rect.midright
 
         # store position as float
@@ -28,10 +24,10 @@ class Bullet(Sprite):
     def update(self):
         """move the bullet across the screen"""
         # overwrites the builtin update in the sprite class
-        self.x += self.bullet_speed
+        self.x += self.settings.bullet_speed
         # update the position
         self.rect.x = self.x
 
     def draw_bullet(self):
         """draw bullet to screen"""
-        pygame.draw.rect(self.screen, self.bullet_color, self.rect)
+        pygame.draw.rect(self.screen, self.settings.bullet_color, self.rect)
