@@ -10,11 +10,6 @@ from character import Character
 from bullet import Bullet
 from enemy import Enemy
 
-# TODO: track times alien is hit by ship
-# TODO: create a surface in the gamestats class for
-# rendering remaining lives, score, etc to
-# TODO: print out 'GAME OVER' when game ends
-
 
 class SidewaysShooter:
     """Class to manage game assets and behaviours"""
@@ -25,13 +20,12 @@ class SidewaysShooter:
         self.clock = pygame.time.Clock()
         self.settings = Settings()
         self.bg_color = self.settings.bg_color
-        self.GAME_FONT = pygame.freetype.SysFont('Mono', 18)
         self.DEBUG = self.settings.DEBUG
         self._key_press_debug = pygame.Surface((0, 0))
 
         self.screen = pygame.display.set_mode((self.settings.screen_width,
                                                self.settings.screen_height))
-        pygame.display.set_caption("Trying things out")
+        pygame.display.set_caption("Slideways shootems")
 
         # create an instance of game stats
         self.stats = GameStats(self)
@@ -119,9 +113,10 @@ class SidewaysShooter:
         """respond to bullet enemy collisions."""
         # remove bullets and enemies that have collided
         # first bool is bullet removal
-        _ = pygame.sprite.groupcollide(
-            self.bullets, self.enemies,
-            self.settings.piercing_rounds, True)
+        if pygame.sprite.groupcollide(
+                self.bullets, self.enemies,
+                self.settings.piercing_rounds, True):
+            self.stats.enemies_hit += 1
 
         if not self.enemies:
             # reset bullets and enemies
@@ -152,7 +147,7 @@ class SidewaysShooter:
         """create the fleet of enemies"""
         # sprite1 is 29w x 28h
         # sprite2 is 25w x 26h
-        # rough avg of 2 sprite widths to ensure they start on different collumns
+        # rough avg of 2 sprites to ensure they start on different collumns
         current_x = self.settings.screen_width - 25 * 3
         for enemy_type in ['images/enemy_sprite.png',
                            'images/enemy_sprite_2.png']:
@@ -198,7 +193,6 @@ class SidewaysShooter:
         """respond to the player character being hit by an enemy."""
         if self.stats.character_lives > 0:
             self.stats.character_lives -= 1
-            self._print_character_lives()
 
             # Remove any leftover objects
             self.bullets.empty()
@@ -213,11 +207,13 @@ class SidewaysShooter:
         else:
             self._game_active = False
 
-    def _print_character_lives(self):
-        self.stats._stats_surface, _ = self.GAME_FONT.render(
-            str(f"Lives Left: {self.stats.character_lives}"), (0, 0, 0))
-        self.screen.blit(self.stats._stats_surface,
-                         self.screen.get_rect().midtop)
+    def _end_game(self):
+        """respond to game ending condition."""
+        self._game_over_surface, _ = self.settings.GAME_FONT.render(
+            str("GAME OVER"),
+            (0, 0, 0))
+        self.screen.blit(self._game_over_surface,
+                         self.screen.get_rect().center)
 
     def _update_screen(self):
         """update images on the screen, and flip to the new screen."""
@@ -228,12 +224,15 @@ class SidewaysShooter:
             self.screen.blit(self._key_press_debug,
                              self.screen.get_rect().midleft)
 
-        self._print_character_lives()
+        self.stats.print_stats()
 
         self.character.blitme()
         self.enemies.draw(self.screen)
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
+
+        if not self._game_active:
+            self._end_game()
 
         pygame.display.flip()
 

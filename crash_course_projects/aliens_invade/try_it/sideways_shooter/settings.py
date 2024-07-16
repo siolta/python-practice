@@ -1,3 +1,6 @@
+import pygame
+
+
 class Settings:
     """Container class for settings"""
 
@@ -6,6 +9,9 @@ class Settings:
         # Debug settings
         self.DEBUG = False
 
+        # Font settings
+        self.GAME_FONT = pygame.freetype.SysFont('Mono', 18)
+
         # Screen settings
         self.screen_width = 1200
         self.screen_height = 800
@@ -13,7 +19,7 @@ class Settings:
 
         # Character settings
         self.char_speed = 1.5
-        self.char_lives = 3
+        self.char_lives = 0
 
         # Bullet settings
         self.bullet_speed = 2.0
@@ -21,7 +27,7 @@ class Settings:
         self.bullet_height = 1000
         self.bullet_color = (102, 0, 0)
         self.bullets_allowed = 3
-        # setting behaviour is inverse of name
+        # setting behaviour is inverted
         self.piercing_rounds = False
 
         # Enemy settings
