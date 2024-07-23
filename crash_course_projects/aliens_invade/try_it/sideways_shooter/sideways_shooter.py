@@ -210,7 +210,7 @@ class SidewaysShooter:
     def _end_game(self):
         """respond to game ending condition."""
         self._game_over_surface, _ = self.settings.GAME_FONT.render(
-            str("GAME OVER"),
+            "GAME OVER",
             (0, 0, 0))
         self.screen.blit(self._game_over_surface,
                          self.screen.get_rect().center)

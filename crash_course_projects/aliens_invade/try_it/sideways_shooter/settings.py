@@ -19,7 +19,7 @@ class Settings:
 
         # Character settings
         self.char_speed = 1.5
-        self.char_lives = 0
+        self.char_lives = 3
 
         # Bullet settings
         self.bullet_speed = 2.0
