@@ -11,11 +11,6 @@ from bullet import Bullet
 from alien import Alien
 
 
-# TODO: make a set of buttons that select the starting difficulty
-# button should assign the right values for the dynamic attributes in
-# the Settings class
-
-
 class AlienInvasion:
     """Overall class to manage game assets and behavior."""
 
@@ -85,6 +80,7 @@ class AlienInvasion:
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 self._check_play_button(mouse_pos)
+                self._check_difficulty_buttons(mouse_pos)
 
     def _check_play_button(self, mouse_pos):
         """Start a new game when the player clicks Play."""
@@ -94,9 +90,15 @@ class AlienInvasion:
             self.settings.initialize_dynamic_settings()
             self._start_game()
 
-    def _check_difficulty_button(self, mouse_pos):
+    def _check_difficulty_buttons(self, mouse_pos):
         """Adjust the difficulty based on which modifier is chosen."""
-        pass
+        if not self._game_active:
+            if self.level_2_button.rect.collidepoint(mouse_pos):
+                self.settings.initialize_level(2)
+                self._start_game()
+            if self.level_3_button.rect.collidepoint(mouse_pos):
+                self.settings.initialize_level(3)
+                self._start_game()
 
     def _start_game(self):
         # Reset the game statistics.

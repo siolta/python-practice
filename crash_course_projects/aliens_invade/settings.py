@@ -37,6 +37,13 @@ class Settings:
         # fleet_direction of 1 represents right; -1 represents left
         self.fleet_direction = 1
 
+    def initialize_level(self, level):
+        """Initialize the dynamic settings for the selected level."""
+        self.initialize_dynamic_settings()
+        for i in range(1, level):
+            self.increase_speed()
+        print(self.ship_speed)
+
     def increase_speed(self):
         """Increase speed settings."""
         self.ship_speed *= self.speedup_scale
