@@ -4,8 +4,11 @@ import pygame
 from pygame.sprite import Sprite
 from random import randint
 
-# TODO: Make it so when a row dissappears, a new row appears
-# at the top of the screen and begins to fall
+# TODO: refactor this to create a rectangle at the right edge
+# of the screen that moves up and down.
+# ship on the left side
+# add play button to start the game
+# when the player misses the target three times end the game
 # TODO: make the target move faster each time it's hit
 # TODO: Restart the target at the og speed when player clicks 'play'
 

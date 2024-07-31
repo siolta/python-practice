@@ -46,6 +46,7 @@ class AlienInvasion:
         # Make the Play button.
         self.play_button = Button(self, "Play")
 
+        # TODO: refactor the button class to support placement?
         # Make the difficulty buttons
         self.level_2_button = Button(self, "Level 2")
         self.level_2_button.rect.top = self.play_button.rect.bottom + 30
