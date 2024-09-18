@@ -13,14 +13,10 @@ all_eq_sets = all_eq_data['features']
 
 mags, lons, lats, eq_titles = [], [], [], []
 for eq_dict in all_eq_sets:
-    mag = eq_dict['properties']['mag']
-    lon = eq_dict['geometry']['coordinates'][0]
-    lat = eq_dict['geometry']['coordinates'][1]
-    eq_title = eq_dict['properties']['title']
-    mags.append(mag)
-    lats.append(lat)
-    lons.append(lon)
-    eq_titles.append(eq_title)
+    mags.append(eq_dict['properties']['mag'])
+    lats.append(eq_dict['geometry']['coordinates'][1])
+    lons.append(eq_dict['geometry']['coordinates'][0])
+    eq_titles.append(eq_dict['properties']['title'])
 
 title = all_eq_data['metadata']['title']
 fig = px.scatter_geo(lat=lats, lon=lons, size=mags, title=title,
