@@ -5,5 +5,6 @@ Once logged in, a user can create new topics, add new entries, and read and edit
 
 
 ### TODOs
- - TODO: Try-It 18-4
- - TODO: Try-It 18-5 & 6
+- TODO: Try-It 18-4
+- TODO: Try-It 18-5 & 6
+- TODO: Try-It 18-8
