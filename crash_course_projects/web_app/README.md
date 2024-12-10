@@ -4,7 +4,5 @@ The Learning Log home page will describe the site and invite users to either reg
 Once logged in, a user can create new topics, add new entries, and read and edit existing entries.
 
 
-### TODOs
-- TODO: Try-It 18-4
-- TODO: Try-It 18-5 & 6
-- TODO: Try-It 18-8
+### TODOs to review
+- 
