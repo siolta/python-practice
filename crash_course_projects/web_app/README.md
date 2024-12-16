@@ -5,4 +5,3 @@ Once logged in, a user can create new topics, add new entries, and read and edit
 
 
 ### TODOs to review
-- 19-3 - p430, refactor learning_logs/views.py, add func 'check_topic_owner()'
