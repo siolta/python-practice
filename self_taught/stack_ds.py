@@ -33,3 +33,14 @@ for i in range(0, 6):
 
 print(f"Peek: {stack.peek()}")
 print(f"Size: {stack.size()}")
+
+stack = Stack()
+for c in "Hello":
+    stack.push(c)
+
+reverse = ""
+
+for i in range(len(stack.items)):
+    reverse += stack.pop()
+
+print(f"Reversed stack: {reverse}")
