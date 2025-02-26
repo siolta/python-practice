@@ -12,8 +12,7 @@ class Player(CircleShape):
 
     def triangle(self):
         forward = pygame.Vector2(0, -1).rotate(self.rotation)
-        right = pygame.Vector2(0, 1).rotate(
-            self.rotation + 90) * self.radius / 1.5
+        right = pygame.Vector2(0, 1).rotate(self.rotation + 90) * self.radius / 1.75
         a = self.position + forward * self.radius
         b = self.position - forward * self.radius - right
         c = self.position - forward * self.radius + right
@@ -40,7 +39,13 @@ class Player(CircleShape):
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += forward * PLAYER_SPEED * dt
+        # wrap position on x axis
         if self.position[0] >= 1280:
             self.position[0] = 0
-        if self.position[1] >= 720:
+        elif self.position[0] <= 0:
+            self.position[0] = 1280
+        # wrap position on y axis
+        elif self.position[1] >= 720:
             self.position[1] = 0
+        elif self.position[1] <= 0:
+            self.position[1] = 720
