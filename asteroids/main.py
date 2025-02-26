@@ -12,16 +12,20 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
-    # Time since last frame was drawn
-    dt = 0
-    asteroids = pygame.sprite.Group()
+
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
-    Player.containers = [updatable, drawable]
+    asteroids = pygame.sprite.Group()
+
     Asteroid.containers = [asteroids, updatable, drawable]
     AsteroidField.containers = [updatable]
+    asteroid_field = AsteroidField()
+
+    Player.containers = [updatable, drawable]
     player = Player(PLAYER_START_X, PLAYER_START_Y)
-    asteroidfield = AsteroidField()
+
+    # Time since last frame was drawn
+    dt = 0
 
     while True:
         for event in pygame.event.get():

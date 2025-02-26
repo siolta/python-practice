@@ -40,3 +40,7 @@ class Player(CircleShape):
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
         self.position += forward * PLAYER_SPEED * dt
+        if self.position[0] >= 1280:
+            self.position[0] = 0
+        if self.position[1] >= 720:
+            self.position[1] = 0
