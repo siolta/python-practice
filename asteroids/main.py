@@ -38,10 +38,15 @@ def main():
 
         updatable.update(dt)
 
-        for sprite in asteroids:
-            if sprite.is_colliding(player):
+        for asteroid in asteroids:
+            if asteroid.is_colliding(player):
                 print("Game over!")
                 exit()
+
+            for shot in shots:
+                if asteroid.is_colliding(shot):
+                    asteroid.split()
+                    shot.kill()
 
         screen.fill("black")
         for sprite in drawable:
