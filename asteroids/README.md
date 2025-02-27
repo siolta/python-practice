@@ -12,6 +12,7 @@
 - Create different weapon types
 - Make the asteroids lumpy instead of perfectly round
 - Make the ship have a triangular hit box instead of a circular one
+    - Use a surface mask to create a triangular hitbox? eg; pygame.mask.from_surface(ship_surface)
 - Add a shield power-up
 - Add a speed power-up
 - Add bombs that can be dropped
