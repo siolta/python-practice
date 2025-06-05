@@ -1,0 +1,10 @@
+[project]
+name = "weather-fetcher"
+version = "0.1.0"
+description = "Simple command line weather forecasts"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "argparse>=1.4.0",
+    "requests>=2.32.3",
+]
