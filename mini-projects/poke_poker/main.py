@@ -85,9 +85,9 @@ def battle(poke_a, poke_b):
 def print_start(a, b):
     print("3... 2... 1...\n")
     print("Two pokemon are about to battle!")
-    print(f"It's: {a['name']}, with {a['stats']['hp']}")
+    print(f"It's: {a['name']}, with {a['stats']['hp']} HP")
     print("vs")
-    print(f"{b['name']}, with {b['stats']['hp']}\n")
+    print(f"{b['name']}, with {b['stats']['hp']} HP\n")
 
 
 def main():
