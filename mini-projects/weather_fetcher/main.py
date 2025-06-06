@@ -17,7 +17,9 @@ def get_location_args():
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("zip", help="zip/postal code to request weather for")
+    parser.add_argument("zip", help="zip/postal code to request weather for", nargs="?")
+
+    return parser.parse_args()
 
 
 def get_location_via_input():
@@ -45,7 +47,8 @@ def get_coordinates(location: str):
 
 
 def request_weather_data(lat, lon):
-    data_url = f"data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}&unit=metric"
+    params = {"lat": lat, "lon": lon, "appid": API_KEY, "unit": "metric"}
+    data_url = "data/2.5/weather?" + urllib.parse.urlencode(params)
     try:
         r = requests.get(BASE_URL + data_url)
         r.raise_for_status()
@@ -61,8 +64,10 @@ def display_forecast(forecast):
 
 
 def main():
-    location = get_location_via_input()
-    location_data = get_coordinates(location)
+    args = get_location_args()
+    if not args.zip:
+        args.zip = get_location_via_input()
+    location_data = get_coordinates(args.zip)
     # print(location_data)
     forecast = request_weather_data(location_data["lat"], location_data["lon"])
     # print(forecast)
