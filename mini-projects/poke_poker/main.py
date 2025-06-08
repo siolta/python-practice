@@ -1,5 +1,6 @@
 import requests
 import random
+import time
 
 
 # Get 2 random pokemon
@@ -85,6 +86,7 @@ def battle(poke_a, poke_b):
 def print_start(a, b):
     print("3... 2... 1...\n")
     print("Two pokemon are about to battle!")
+    time.sleep(2)
     print(f"It's: {a['name']}, with {a['stats']['hp']} HP")
     print("vs")
     print(f"{b['name']}, with {b['stats']['hp']} HP\n")
