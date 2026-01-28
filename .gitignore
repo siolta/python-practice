@@ -127,6 +127,9 @@ dmypy.json
 # ignore any PDF files
 *.pdf
 
+# ignore testing txt files
+*.txt
+
 # ignore images
 *.gif
 *.png
